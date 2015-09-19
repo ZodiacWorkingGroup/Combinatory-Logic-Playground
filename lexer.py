@@ -3,6 +3,7 @@ from UtopiaLexer import *
 COMBINATOR = 'COMB'
 PAREN = 'PAREN'
 
+
 def lexscript(script):
     lex = lexer()
 
