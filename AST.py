@@ -12,7 +12,7 @@ class RawCombinator(Equality):
 
 
 class CombinatorExp(Equality):
-    def __init__(self, comb, argument=None):
+    def __init__(self, comb, argument):
         self.comb = comb
         self.arg = argument
 
@@ -20,8 +20,8 @@ class CombinatorExp(Equality):
         if self.comb == 'S':
             return
         elif self.comb == 'K':
-            if self.arg == None:
-                return self.comb
+            if type(self.arg) == RawCombinator:
+                return self.arg
             else:
                 return self.arg.eval()
         else:
