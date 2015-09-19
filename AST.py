@@ -1,28 +1,33 @@
-class Equality:
+class Result:
+    def __init__(self, value, combinators):
+        self.value = value
+        self.combinators = combinators
+
+class Expression:  # Credit to Tanner Swett
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
 
-class RawCombinator(Equality):
+class CombinatorExpression(Expression):
     def __init__(self, comb):
         self.comb = comb
 
     def eval(self, combinators):
-        return self.comb
+        if self in combinators:
+            return self.comb
+        else:
+            raise ValueError('Invalid Combinator Encountered')
 
 
-class CombinatorExp(Equality):
+class ApplyExpression(Expression):
     def __init__(self, comb, argument):
         self.comb = comb
         self.arg = argument
 
     def eval(self, combinators):
         if self.comb == 'S':
-            return
+            return Result(None, combinators)
         elif self.comb == 'K':
-            if type(self.arg) == RawCombinator:
-                return self.arg
-            else:
-                return self.arg.eval()
+            return Result(self.arg.eval(), combinators)
         else:
-            return combinators[self.comb].eval(combinators)
+            return Result(combinators[self.comb].eval(combinators), combinators)
